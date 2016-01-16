@@ -1,0 +1,27 @@
+# Maps every action on a xbox360 controller to a mouse or keyboard binding
+# Can be used to reconfigure any game
+---
+axismap:
+- X2=REL_X:20
+- Y2=REL_Y:20
+- X1=KEY_A:KEY_D
+- Y1=KEY_W:KEY_S
+
+buttonmap:
+- LB=BTN_LEFT
+- RB=BTN_RIGHT
+- START=KEY_ESC
+- BACK=KEY_TAB
+- UP=KEY_UP
+- DOWN=KEY_DOWN
+- LEFT=KEY_LEFT
+- RIGHT=KEY_RIGHT
+- LT=KEY_Q
+- RT=KEY_E
+- A=KEY_R
+- B=KEY_F
+- X=KEY_X
+- Y=KEY_C
+- TR=KEY_T
+- TL=KEY_G
+
