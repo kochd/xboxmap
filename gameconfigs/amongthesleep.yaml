@@ -1,0 +1,19 @@
+---
+axismap:
+- X2=REL_X:20
+- Y2=REL_Y:20
+- X1=KEY_A:KEY_D
+- Y1=KEY_W:KEY_S
+
+buttonmap:
+- LB=BTN_LEFT
+- RB=BTN_RIGHT
+- START=KEY_ESC #menu
+- LT=KEY_Q # lean left
+- RT=KEY_E # lean right
+- B=KEY_LEFTCTRL # Crawl/Stand
+- X=KEY_LEFTSHIFT # Sprint
+- A=KEY_SPACE # Climb
+- BACK=KEY_TAB # Inventory
+- TR=KEY_F # Hug teddy
+- Y=KEY_R # Rotate object

@@ -1,0 +1,21 @@
+---
+# What driver should be loaded after xboxmap gets interuppted?
+# One of xpad or xboxdrv.
+# default: xpad
+postload: "xpad"
+
+# Use the --detach-kernel-driver kernel driver option for xboxdrv
+# Requires root privleges
+# Use 'man xboxdrv' for details
+# default: true
+kernel-detach: true
+
+# Force feedback (vibration)
+# default: true
+force-feedback: true
+
+# Shell command to be execute after xbox
+# Can be used to restart session manager for example:
+#postexec: "service slim restart"
+# default:
+postexec:

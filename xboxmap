@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+require 'yaml'
+require 'fileutils'
+CONFIGFILE = File.dirname(__FILE__) + "/config.yaml"
+FileUtils.cp(CONFIGFILE+".sample",CONFIGFILE) unless File.exist? CONFIGFILE
+CONFIG = YAML.load(File.read(CONFIGFILE))
+GAMECONFIG_EXT = /(\.yml$|\.yaml$)/
+
+def help
+  "Usage:
+\t xboxmap FILEPATH \t Use FILEPATH as configfile
+\t xboxmap NAME \t\t Use NAME as configfile as located in gameconfigs ( without extension )
+"
+end
+
+def config_validate(config)
+  fail "Gameconfig contains invalid chars" if config =~ /(\"|\;|\"\')/
+end
+
+gameconfigname = ARGV[0].to_s
+(puts help ; exit) if ARGV[0].nil? || ARGV[0] =~ (/(^--h|^-h)/)
+gameconfigdir = File.dirname(__FILE__) + "/gameconfigs"
+gameconfigfiles = Dir.entries(gameconfigdir).select{|x| x =~ GAMECONFIG_EXT }
+gameconfigs = gameconfigfiles.map{|x| x.sub(GAMECONFIG_EXT, "")}.uniq
+kerneldetach = ""
+kerneldetach = "--detach-kernel-driver" if CONFIG["kernel-detach"]
+forcefeedback = ""
+p  CONFIG["force-feedback"]
+forcefeedback = "--force-feedback" if CONFIG["force-feedback"]
+puts "Loading gameconfig for #{gameconfigname}"
+if !File.exist?(gameconfigname)
+  fail "A gameconfig for #{gameconfigname} does not exist" unless gameconfigs.include?(gameconfigname)
+  puts "Loading gameconfigfile for: #{gameconfigname}"
+else
+  puts "Loading gameconfigfile: #{gameconfigname}"
+end
+gameconfigfile = gameconfigfiles.select{|x|p x && x.start_with?(gameconfigname)}.first
+gameconfig = YAML.load(File.read(gameconfigdir + "/" + gameconfigfile ))
+config_validate(gameconfig)
+cmdline = "xboxdrv --silent --deadzone 9000 #{forcefeedback} #{kerneldetach} --dpad-as-button --trigger-as-button --ui-axismap=#{gameconfig['axismap'].join(',')} --ui-buttonmap=#{gameconfig['buttonmap'].join(',')}"
+config_validate(cmdline)
+puts cmdline.gsub(",","\\\n")
+system "rmmod xpad"
+system "rmmod ff_memless"
+`killall xboxdrv >/dev/null`
+
+xboxdrv = spawn cmdline + " >/dev/null"
+puts "Loaded config #{gameconfigname}"
+Signal.trap("INT") do
+  puts "Trapped"
+  Process.kill("KILL", xboxdrv)
+
+  case CONFIG["postload"]
+  when "xpad" then
+    puts "Loading xpad"
+    sleep 1
+    system "modprobe xpad"
+    if CONFIG["postexec"]
+      puts "running postexec: #{CONFIG["postexec"]}"
+      system CONFIG["postexec"]
+    end
+  when "xboxdrv" then
+    spawn `xboxdrv --silent --detach --daemon #{kerneldetach}`
+  else fail "Wrong option for postload in config.yaml"
+  end
+  exit
+end
+
+loop { sleep 99 } # Wait for trap

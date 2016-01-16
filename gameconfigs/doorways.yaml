@@ -1,0 +1,20 @@
+# Tested with "Doorways: Prelude" and "Doorways: The Underground"
+---
+axismap:
+- X2=REL_X:20
+- Y2=REL_Y:20
+- X1=KEY_A:KEY_D
+- Y1=KEY_W:KEY_S
+
+buttonmap:
+- RT=KEY_LEFTCTRL
+- LT=KEY_LEFTSHIFT
+- A=KEY_SPACE
+- LB=BTN_LEFT
+- RB=BTN_RIGHT
+- START=KEY_ESC
+- TL=KEY_I
+- TR=KEY_F
+- Y=KEY_R
+- X=KEY_N
+- B=KEY_I
