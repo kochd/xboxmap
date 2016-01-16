@@ -20,4 +20,4 @@ You'll also find a config.yaml after the first start of xboxmap which contrains 
 
 # Contributions & Missing games
 If you have any problems or miss a game feel free to contact me. 
-If you want to contribute the format is quiete easy to understand see [amongthesleep.yaml](https://github.com/kochd/xboxmap/blob/master/gameconfigs/amongthesleep.yaml) for example.
+If you want to contribute the format is quiete easy to understand see [generic.yaml](https://github.com/kochd/xboxmap/blob/master/gameconfigs/generic.yaml) for example as it maps all keys.
