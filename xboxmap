@@ -41,11 +41,14 @@ config_validate(gameconfig)
 cmdline = "xboxdrv --silent --deadzone 9000 #{forcefeedback} #{kerneldetach} --dpad-as-button --trigger-as-button --ui-axismap=#{gameconfig['axismap'].join(',')} --ui-buttonmap=#{gameconfig['buttonmap'].join(',')}"
 config_validate(cmdline)
 puts cmdline.gsub(",","\\\n")
-system "rmmod xpad"
-system "rmmod ff_memless"
-`killall xboxdrv >/dev/null`
+system "rmmod xpad 2>/dev/null"
+system "rmmod ff_memless 2>/dev/null"
+system "killall xboxdrv 2>/dev/null"
 
-xboxdrv = spawn cmdline + " >/dev/null"
+@output = ""
+xboxdrv = Thread.new { @output = `#{cmdline}` }
+sleep 1
+fail @output if xboxdrv.status == false
 puts "Loaded config #{gameconfigname}"
 Signal.trap("INT") do
   puts "Trapped"
@@ -66,5 +69,4 @@ Signal.trap("INT") do
   end
   exit
 end
-
-loop { sleep 99 } # Wait for trap
+xboxdrv.join # Wait for trap
