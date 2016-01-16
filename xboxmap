@@ -52,8 +52,6 @@ fail @output if xboxdrv.status == false
 puts "Loaded config #{gameconfigname}"
 Signal.trap("INT") do
   puts "Trapped"
-  Process.kill("KILL", xboxdrv)
-
   case CONFIG["postload"]
   when "xpad" then
     puts "Loading xpad"
