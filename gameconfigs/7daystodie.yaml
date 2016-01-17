@@ -1,0 +1,24 @@
+# Maps every action on a xbox360 controller to a mouse or keyboard binding
+# Can be used to reconfigure any game
+---
+axismap:
+- X2=REL_X:20
+- Y2=REL_Y:20
+- X1=KEY_A:KEY_D
+- Y1=KEY_W:KEY_S
+
+buttonmap:
+- LB=BTN_LEFT
+- RB=BTN_RIGHT
+- A=KEY_SPACE # Jump
+- RT=KEY_LEFTSHIFT # Run
+- B=KEY_LEFTCTRL # Toggle Crouch
+- X=KEY_E # Activate
+- Y=KEY_R # Reload/Takeall
+- START=KEY_ESC # Menu
+- BACK=KEY_TAB # Inventory
+- DOWN=KEY_Q # Drop
+- LEFT=KEY_N # Skills
+- RIGHT=KEY_B # Character
+- UP=KEY_F # Toggle Flashlight
+

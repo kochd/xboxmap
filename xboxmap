@@ -26,17 +26,20 @@ gameconfigs = gameconfigfiles.map{|x| x.sub(GAMECONFIG_EXT, "")}.uniq
 kerneldetach = ""
 kerneldetach = "--detach-kernel-driver" if CONFIG["kernel-detach"]
 forcefeedback = ""
-p  CONFIG["force-feedback"]
 forcefeedback = "--force-feedback" if CONFIG["force-feedback"]
 puts "Loading gameconfig for #{gameconfigname}"
-if !File.exist?(gameconfigname)
-  fail "A gameconfig for #{gameconfigname} does not exist" unless gameconfigs.include?(gameconfigname)
+
+if File.file?(gameconfigname)
   puts "Loading gameconfigfile for: #{gameconfigname}"
+  gameconfigfile = gameconfigname
+  gameconfig = YAML.load(File.read(gameconfigfile))
 else
   puts "Loading gameconfigfile: #{gameconfigname}"
+  fail "A gameconfig for #{gameconfigname} does not exist" unless gameconfigs.include?(gameconfigname)
+  gameconfigfile = gameconfigfiles.select{|x|p x && x.start_with?(gameconfigname)}.first
+  gameconfig = YAML.load(File.read(gameconfigdir + "/" + gameconfigfile ))
 end
-gameconfigfile = gameconfigfiles.select{|x|p x && x.start_with?(gameconfigname)}.first
-gameconfig = YAML.load(File.read(gameconfigdir + "/" + gameconfigfile ))
+
 config_validate(gameconfig)
 cmdline = "xboxdrv --silent --deadzone 9000 #{forcefeedback} #{kerneldetach} --dpad-as-button --trigger-as-button --ui-axismap=#{gameconfig['axismap'].join(',')} --ui-buttonmap=#{gameconfig['buttonmap'].join(',')}"
 config_validate(cmdline)
